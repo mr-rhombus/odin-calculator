@@ -1,0 +1,100 @@
+function add(a, b) {
+  return a + b;
+}
+
+function subtract(a, b) {
+  return a - b;
+}
+
+function multiply(a, b) {
+  return a * b;
+}
+
+function divide(a, b) {
+  return a / b;
+}
+
+function operate(a, operator, b) {
+  a = +a;
+  b = +b;
+  switch (operator) {
+    case "+":
+      return add(a, b);
+      break;
+    case "-":
+      return subtract(a, b);
+      break;
+    case "*":
+      return multiply(a, b);
+    case "÷":
+      return divide(a, b);
+      break;
+    default:
+      console.log("Unrecognized operator: " + operator);
+      return;
+  }
+}
+
+const calculator = document.querySelector("#calculator");
+function createCalculator() {
+  const calculatorScreen = document.createElement("div");
+  calculatorScreen.setAttribute("id", "calculatorScreen");
+  calculator.appendChild(calculatorScreen);
+  for (let i = 1; i <= 5; i++) {
+    calculator.appendChild(createCalculatorRow(i));
+  }
+}
+
+function createCalculatorRow(rowNum) {
+  const row = document.createElement("div");
+  row.setAttribute("id", "row" + rowNum);
+  row.setAttribute("class", "calculatorRow");
+  return row;
+}
+
+function createButton({ content, fontSize = 14, disabled = false }) {
+  const button = document.createElement("button");
+  button.textContent = content;
+  button.setAttribute("id", "btn" + content);
+  button.style.fontSize = fontSize + "px";
+  button.disabled = disabled;
+  return button;
+}
+
+// Basic calculator layout
+createCalculator();
+
+// Row 1
+const row1 = document.querySelector("#row1");
+row1.appendChild(createButton({ content: "del", disabled: true }));
+row1.appendChild(createButton({ content: "AC", disabled: true }));
+row1.appendChild(createButton({ content: "%", disabled: true }));
+row1.appendChild(createButton({ content: "÷", fontSize: 24 }));
+
+// Row 2
+const row2 = document.querySelector("#row2");
+row2.appendChild(createButton({ content: "7" }));
+row2.appendChild(createButton({ content: "8" }));
+row2.appendChild(createButton({ content: "9" }));
+row2.appendChild(createButton({ content: "x", fontSize: 18 }));
+
+// Row 3
+const row3 = document.querySelector("#row3");
+row3.appendChild(createButton({ content: "4" }));
+row3.appendChild(createButton({ content: "5" }));
+row3.appendChild(createButton({ content: "6" }));
+row3.appendChild(createButton({ content: "-", fontSize: 24 }));
+
+// Row 4
+const row4 = document.querySelector("#row4");
+row4.appendChild(createButton({ content: "1" }));
+row4.appendChild(createButton({ content: "2" }));
+row4.appendChild(createButton({ content: "3" }));
+row4.appendChild(createButton({ content: "+", fontSize: 20 }));
+
+// Row 5
+const row5 = document.querySelector("#row5");
+row5.appendChild(createButton({ content: "neg", disabled: true }));
+row5.appendChild(createButton({ content: "0" }));
+row5.appendChild(createButton({ content: ".", fontSize: 20, disabled: true }));
+row5.appendChild(createButton({ content: "=", fontSize: 20 }));
