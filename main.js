@@ -67,7 +67,7 @@ createCalculator();
 // Row 1
 const row1 = document.querySelector("#row1");
 row1.appendChild(createButton({ content: "del", disabled: true }));
-row1.appendChild(createButton({ content: "AC", disabled: true }));
+row1.appendChild(createButton({ content: "AC" }));
 row1.appendChild(createButton({ content: "%", disabled: true }));
 row1.appendChild(createButton({ content: "÷", fontSize: 24 }));
 
@@ -98,3 +98,22 @@ row5.appendChild(createButton({ content: "neg", disabled: true }));
 row5.appendChild(createButton({ content: "0" }));
 row5.appendChild(createButton({ content: ".", fontSize: 20, disabled: true }));
 row5.appendChild(createButton({ content: "=", fontSize: 20 }));
+
+// Interactive buttons
+const buttons = document.querySelectorAll("button");
+buttons.forEach((button) => {
+  if (button.disabled == false && button.textContent != "AC") {
+    button.addEventListener("click", () => populateScreen(button.textContent));
+  }
+});
+const calculatorScreen = document.querySelector("#calculatorScreen");
+
+const clearButton = document.querySelector("#btnAC");
+clearButton.addEventListener(
+  "click",
+  () => (calculatorScreen.textContent = ""),
+);
+
+function populateScreen(value) {
+  calculatorScreen.textContent += value;
+}
