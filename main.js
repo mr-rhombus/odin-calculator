@@ -37,12 +37,22 @@ function operate(a, operator, b) {
 
 const calculator = document.querySelector("#calculator");
 function createCalculator() {
-  const calculatorScreen = document.createElement("div");
-  calculatorScreen.setAttribute("id", "calculatorScreen");
-  calculator.appendChild(calculatorScreen);
+  calculator.appendChild(createCalculatorScreen());
   for (let i = 1; i <= 5; i++) {
     calculator.appendChild(createCalculatorRow(i));
   }
+}
+
+function createCalculatorScreen() {
+  const calculatorScreen = document.createElement("div");
+  calculatorScreen.setAttribute("id", "calculatorScreen");
+  const calculatorScreenTop = document.createElement("div");
+  calculatorScreenTop.setAttribute("id", "calculatorScreenTop");
+  calculatorScreen.appendChild(calculatorScreenTop);
+  const calculatorScreenBotton = document.createElement("div");
+  calculatorScreenBotton.setAttribute("id", "calculatorScreenBottom");
+  calculatorScreen.appendChild(calculatorScreenBotton);
+  return calculatorScreen;
 }
 
 function createCalculatorRow(rowNum) {
@@ -55,7 +65,9 @@ function createCalculatorRow(rowNum) {
 function createButton({ content, fontSize = 14, disabled = false }) {
   const button = document.createElement("button");
   button.textContent = content;
-  button.setAttribute("id", "btn" + content);
+  if (content == "=") {
+    button.setAttribute("id", "btnEq");
+  } else button.setAttribute("id", "btn" + content);
   button.style.fontSize = fontSize + "px";
   button.disabled = disabled;
   return button;
@@ -101,19 +113,28 @@ row5.appendChild(createButton({ content: "=", fontSize: 20 }));
 
 // Interactive buttons
 const buttons = document.querySelectorAll("button");
+const specialButtons = ["AC", "="];
 buttons.forEach((button) => {
-  if (button.disabled == false && button.textContent != "AC") {
+  if (
+    button.disabled == false &&
+    !specialButtons.includes(button.textContent)
+  ) {
     button.addEventListener("click", () => populateScreen(button.textContent));
   }
 });
-const calculatorScreen = document.querySelector("#calculatorScreen");
-
-const clearButton = document.querySelector("#btnAC");
-clearButton.addEventListener(
-  "click",
-  () => (calculatorScreen.textContent = ""),
-);
+const calculatorScreenBotton = document.querySelector("#calculatorScreen");
 
 function populateScreen(value) {
-  calculatorScreen.textContent += value;
+  calculatorScreenBottom.textContent += value;
 }
+
+const clearButton = document.querySelector("#btnAC");
+clearButton.addEventListener("click", () => {
+  calculatorScreenTop.textContent = "";
+  calculatorScreenBottom.textContent = "";
+});
+
+const equalButton = document.querySelector("#btnEq");
+equalButton.addEventListener("click", () => {
+  calculatorScreenTop.textContent = calculatorScreenBottom.textContent;
+});
