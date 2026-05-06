@@ -125,15 +125,21 @@ buttons.forEach((button) => {
 const calculatorScreenBotton = document.querySelector("#calculatorScreen");
 
 function populateScreen(value) {
+  // Clear result from previously evaluated expression if one exists
+  if (calculatorScreenTop.textContent != "") {
+    clearScreen();
+  }
   calculatorScreenBottom.textContent += value;
 }
 
 // Clear screen
-const clearButton = document.querySelector("#btnAC");
-clearButton.addEventListener("click", () => {
+function clearScreen() {
   calculatorScreenTop.textContent = "";
   calculatorScreenBottom.textContent = "";
-});
+}
+
+const clearButton = document.querySelector("#btnAC");
+clearButton.addEventListener("click", () => clearScreen());
 
 // Calculate result
 const operators = ["+", "-", "x", "÷"];
