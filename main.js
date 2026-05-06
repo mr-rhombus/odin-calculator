@@ -81,7 +81,7 @@ const row1 = document.querySelector("#row1");
 row1.appendChild(createButton({ content: "del", disabled: true }));
 row1.appendChild(createButton({ content: "AC" }));
 row1.appendChild(createButton({ content: "%", disabled: true }));
-row1.appendChild(createButton({ content: "÷", fontSize: 24 }));
+row1.appendChild(createButton({ content: "÷", fontSize: 24 })); // Division sign, NOT plus sign!
 
 // Row 2
 const row2 = document.querySelector("#row2");
@@ -111,7 +111,7 @@ row5.appendChild(createButton({ content: "0" }));
 row5.appendChild(createButton({ content: ".", fontSize: 20, disabled: true }));
 row5.appendChild(createButton({ content: "=", fontSize: 20 }));
 
-// Interactive buttons
+// Button interactivity
 const buttons = document.querySelectorAll("button");
 const specialButtons = ["AC", "="];
 buttons.forEach((button) => {
@@ -128,13 +128,47 @@ function populateScreen(value) {
   calculatorScreenBottom.textContent += value;
 }
 
+// Clear screen
 const clearButton = document.querySelector("#btnAC");
 clearButton.addEventListener("click", () => {
   calculatorScreenTop.textContent = "";
   calculatorScreenBottom.textContent = "";
 });
 
+// Calculate result
+const operators = ["+", "-", "x", "÷"];
 const equalButton = document.querySelector("#btnEq");
 equalButton.addEventListener("click", () => {
   calculatorScreenTop.textContent = calculatorScreenBottom.textContent;
+  calculatorScreenBottom.textContent = expressionIsValid(
+    calculatorScreenTop.textContent,
+  ); // TODO: Use operate() here instead
 });
+
+function expressionIsValid(expression) {
+  let operatorIndices = operators
+    .map((op) => expression.indexOf(op))
+    .filter((index) => index >= 0);
+
+  // Check that there's no more than 1 operator
+  if (operatorIndices.length > 1) {
+    return false;
+  }
+
+  // Check for only a single, non-operator term
+  if (operatorIndices.length == 0 && !isNaN(+expression)) {
+    return true;
+  } else {
+    return false;
+  }
+
+  let operator = expression[operatorIndices[0]];
+  let terms = expression.split(operator);
+
+  // Check that there is a term on either side of the operator
+  if (terms.length != 2) {
+    return false;
+  }
+
+  return true;
+}
