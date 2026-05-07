@@ -33,8 +33,7 @@ function operate(a, operator, b) {
       return divide(a, b);
       break;
     default:
-      console.log("Unrecognized operator: " + operator);
-      return;
+      return a; // User only enters a single number
   }
 }
 
