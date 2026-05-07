@@ -80,7 +80,7 @@ createCalculator();
 
 // Row 1
 const row1 = document.querySelector("#row1");
-row1.appendChild(createButton({ content: "del", disabled: true }));
+row1.appendChild(createButton({ content: "del" }));
 row1.appendChild(createButton({ content: "AC" }));
 row1.appendChild(createButton({ content: "%", disabled: true }));
 row1.appendChild(createButton({ content: "÷", fontSize: 24 })); // Division sign, NOT plus sign!
@@ -115,7 +115,7 @@ row5.appendChild(createButton({ content: "=", fontSize: 20 }));
 
 // Button interactivity
 const buttons = document.querySelectorAll("button");
-const specialButtons = ["AC", "="];
+const specialButtons = ["AC", "=", "del"];
 buttons.forEach((button) => {
   if (
     button.disabled == false &&
@@ -150,6 +150,9 @@ function pressButton(event) {
   if (event.key == "Escape") {
     clearScreen();
     return;
+  } else if (event.key == "Backspace") {
+    deleteTerm();
+    return;
   } else if (event.key == "/") {
     buttonContent = "÷";
   } else if (event.key == "*") {
@@ -179,6 +182,20 @@ function clearScreen() {
 
 const clearButton = document.querySelector("#btnAC");
 clearButton.addEventListener("click", () => clearScreen());
+
+// Delete element
+function deleteTerm() {
+  const screenContent = calculatorScreenBottom.textContent;
+  if (screenContent.length > 0) {
+    calculatorScreenBottom.textContent = screenContent.slice(
+      0,
+      screenContent.length - 1,
+    );
+  }
+}
+
+const deleteButton = document.querySelector("#btndel");
+deleteButton.addEventListener("click", () => deleteTerm());
 
 // Calculate result
 const operators = ["+", "-", "x", "÷"];
