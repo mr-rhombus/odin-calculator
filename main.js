@@ -220,8 +220,8 @@ function expressionIsValid(expression) {
   let operator = expression[operatorIndices[0]];
   let terms = expression.split(operator);
 
-  // Check that there is a term on either side of the operator
-  if (terms.length != 2) {
+  // Check that the second term is not empty
+  if (terms[1] == "") {
     return false;
   }
 
