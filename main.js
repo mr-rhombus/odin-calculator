@@ -11,6 +11,9 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
+  if (b == 0) {
+    return "Inf";
+  }
   return a / b;
 }
 
@@ -24,7 +27,7 @@ function operate(a, operator, b) {
     case "-":
       return subtract(a, b);
       break;
-    case "*":
+    case "x":
       return multiply(a, b);
     case "÷":
       return divide(a, b);
@@ -145,10 +148,15 @@ clearButton.addEventListener("click", () => clearScreen());
 const operators = ["+", "-", "x", "÷"];
 const equalButton = document.querySelector("#btnEq");
 equalButton.addEventListener("click", () => {
-  calculatorScreenTop.textContent = calculatorScreenBottom.textContent;
-  calculatorScreenBottom.textContent = expressionIsValid(
-    calculatorScreenTop.textContent,
-  ); // TODO: Use operate() here instead
+  const expression = calculatorScreenBottom.textContent;
+  calculatorScreenTop.textContent = expression;
+  if (expressionIsValid(expression)) {
+    calculatorScreenBottom.textContent = operate(
+      ...decomposeExpression(expression),
+    );
+  } else {
+    calculatorScreenBottom.textContent = "Invalid";
+  }
 });
 
 function expressionIsValid(expression) {
@@ -164,8 +172,6 @@ function expressionIsValid(expression) {
   // Check for only a single, non-operator term
   if (operatorIndices.length == 0 && !isNaN(+expression)) {
     return true;
-  } else {
-    return false;
   }
 
   let operator = expression[operatorIndices[0]];
@@ -177,4 +183,18 @@ function expressionIsValid(expression) {
   }
 
   return true;
+}
+
+function decomposeExpression(expression) {
+  if (expressionIsValid(expression)) {
+    let operatorIndices = operators
+      .map((op) => expression.indexOf(op))
+      .filter((index) => index >= 0);
+    let operator = expression[operatorIndices[0]];
+    let nums = expression.split(operator);
+    return [nums[0], operator, nums[1]];
+  } else {
+    console.log("Invalid expression found: ", expression);
+    return [];
+  }
 }
