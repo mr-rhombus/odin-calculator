@@ -208,6 +208,11 @@ function expressionIsValid(expression) {
     return false;
   }
 
+  // Check if the operator is the first term. Allow + and -
+  if (["x", "÷"].includes(expression[0])) {
+    return false;
+  }
+
   // Check for only a single, non-operator term
   if (operatorIndices.length == 0 && !isNaN(+expression)) {
     return true;
