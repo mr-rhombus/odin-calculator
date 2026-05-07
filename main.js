@@ -186,6 +186,10 @@ clearButton.addEventListener("click", () => clearScreen());
 // Delete element
 function deleteTerm() {
   const screenContent = calculatorScreenBottom.textContent;
+  // Don't let users delete results
+  if (calculatorScreenTop.textContent.length > 0) {
+    return;
+  }
   if (screenContent.length > 0) {
     calculatorScreenBottom.textContent = screenContent.slice(
       0,
