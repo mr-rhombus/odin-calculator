@@ -52,9 +52,9 @@ function createCalculatorScreen() {
   const calculatorScreenTop = document.createElement("div");
   calculatorScreenTop.setAttribute("id", "calculatorScreenTop");
   calculatorScreen.appendChild(calculatorScreenTop);
-  const calculatorScreenBotton = document.createElement("div");
-  calculatorScreenBotton.setAttribute("id", "calculatorScreenBottom");
-  calculatorScreen.appendChild(calculatorScreenBotton);
+  const calculatorScreenBottom = document.createElement("div");
+  calculatorScreenBottom.setAttribute("id", "calculatorScreenBottom");
+  calculatorScreen.appendChild(calculatorScreenBottom);
   return calculatorScreen;
 }
 
@@ -125,7 +125,44 @@ buttons.forEach((button) => {
     button.addEventListener("click", () => populateScreen(button.textContent));
   }
 });
-const calculatorScreenBotton = document.querySelector("#calculatorScreen");
+
+document.addEventListener("keydown", (event) => pressButton(event));
+
+const activeButtons = [
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "0",
+  "AC",
+  "÷",
+  "x",
+  "-",
+  "+",
+  "=",
+];
+function pressButton(event) {
+  let buttonContent = "";
+  if (event.key == "Escape") {
+    clearScreen();
+    return;
+  } else if (event.key == "/") {
+    buttonContent = "÷";
+  } else if (event.key == "*") {
+    buttonContent = "x";
+  } else if (["=", "Enter"].includes(event.key)) {
+    evaluateExpression();
+    return;
+  } else if (activeButtons.includes(event.key)) {
+    buttonContent = event.key;
+  }
+  populateScreen(buttonContent);
+}
 
 function populateScreen(value) {
   // Clear result from previously evaluated expression if one exists
@@ -147,7 +184,9 @@ clearButton.addEventListener("click", () => clearScreen());
 // Calculate result
 const operators = ["+", "-", "x", "÷"];
 const equalButton = document.querySelector("#btnEq");
-equalButton.addEventListener("click", () => {
+equalButton.addEventListener("click", () => evaluateExpression());
+
+function evaluateExpression() {
   const expression = calculatorScreenBottom.textContent;
   calculatorScreenTop.textContent = expression;
   if (expressionIsValid(expression)) {
@@ -157,7 +196,7 @@ equalButton.addEventListener("click", () => {
   } else {
     calculatorScreenBottom.textContent = "Invalid";
   }
-});
+}
 
 function expressionIsValid(expression) {
   let operatorIndices = operators
